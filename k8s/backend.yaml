@@ -18,14 +18,42 @@ spec:
 
       containers:
         - name: backend
-          image: ghcr.io/prathikrvs163/devops-k8s-backend:aabbedb134df3e8d047b634380d2d369d16afd52
+          image: ghcr.io/prathikrvs163/devops-k8s-backend:52617c594610722ed0b7fda655d22d8ef536bc8a
           imagePullPolicy: IfNotPresent
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+
+
           ports:
             - containerPort: 8000
 
           env:
-            - name: DATABASE_URL
-              value: postgresql://appuser:apppassword@postgres:5432/appdb
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
+
+            - name: POSTGRES_HOST
+              value: postgres
 
           readinessProbe:
             httpGet:
