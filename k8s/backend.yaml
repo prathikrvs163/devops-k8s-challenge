@@ -13,9 +13,12 @@ spec:
       labels:
         app: backend
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+
       containers:
         - name: backend
-          image: devops-k8s-backend:1.0
+          image: ghcr.io/prathikrvs163/devops-k8s-backend:aabbedb134df3e8d047b634380d2d369d16afd52
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000

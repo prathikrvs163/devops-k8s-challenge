@@ -8,9 +8,14 @@ from pydantic import BaseModel
 app = FastAPI(title="DevOps Kubernetes Challenge")
 
 
-DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "postgresql://appuser:apppassword@localhost:5432/appdb",
+DB_USER = os.getenv("POSTGRES_USER")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+DB_NAME = os.getenv("POSTGRES_DB")
+DB_HOST = os.getenv("POSTGRES_HOST", "postgres")
+
+DATABASE_URL = (
+    f"postgresql://{DB_USER}:{DB_PASSWORD}"
+    f"@{DB_HOST}:5432/{DB_NAME}"
 )
 
 
